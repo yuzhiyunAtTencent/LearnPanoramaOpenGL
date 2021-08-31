@@ -135,7 +135,7 @@
         
         
         //实际开发中移除测试按钮
-        [self createTestButton];
+//        [self createTestButton];
         
      }
     return self;
@@ -186,7 +186,7 @@
 
     [self startPanoramViewMotion];
 
-    self.isMotion = NO;
+//    self.isMotion = NO;
 
     
 }
@@ -263,57 +263,6 @@
     _effect.texture2d0.enabled = GL_TRUE;
     _effect.texture2d0.name    = textureInfo.name;
 }
-
-
-// 矩形图
-//- (void)setUpOpenGLByImage{
-//
-//    GLfloat vertexArr[] =
-//    {
-//        1, -1, 0.0f, 1.0f, 0.0f, //右下
-//        1, 1,0.0f,   1.0f, 1.0f, //右上
-//
-//        -1, 1, 0.0f,  0.0f, 1.0f, //左上
-//        -1, -1, 0.0f, 0.0f, 0.0f, //左下
-//    };
-//
-//    GLuint indexVertex[] = {
-//        0, 2, 3,
-//        0, 1, 2,
-//    };
-//
-//    _numIndices = sizeof(indexVertex)/sizeof(GLuint);
-//
-//    GLuint buffer;
-//    glGenBuffers(1, &buffer);
-//    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-//    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArr), vertexArr, GL_STATIC_DRAW);
-//
-//    GLuint index;
-//    glGenBuffers(1, &index);
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
-//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexVertex), indexVertex, GL_STATIC_DRAW);
-//
-//    glEnableVertexAttribArray(GLKVertexAttribPosition);
-//    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*5, (GLfloat *)NULL + 0);
-//
-//    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-//    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*5, (GLfloat *)NULL + 3);
-//
-//
-//    NSString *filePath = [[NSBundle mainBundle]pathForResource:self.imageName ofType:self.imageNameType];
-//
-//    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:@(1),GLKTextureLoaderOriginBottomLeft, nil];
-//
-//    GLKTextureInfo *textureInfo = [GLKTextureLoader textureWithContentsOfFile:filePath
-//                                                                      options:options
-//                                                                        error:nil];
-//
-//    _effect                    = [[GLKBaseEffect alloc]init];
-//    _effect.texture2d0.enabled = GL_TRUE;
-//    _effect.texture2d0.name    = textureInfo.name;
-//}
-
 
 #pragma mark Gesture
 
@@ -436,65 +385,6 @@ static float ww = 0;
         double wz                          = deviceMotion.attitude.quaternion.z;
         
         quaternion = GLKQuaternionMake(-wx,  wy, wz, w);
-//        //修正了初始位置不一致问题
-//        if (xx == 0) {
-//
-//            xx = 0 - wx;
-//            wx = 0;
-//
-//            yy = 0.7 - wy;
-//            wy = 0.7;
-//
-//            zz = 0.7 - wz;
-//            wz = 0.7;
-//
-//            ww = 0 - w;
-//            w = 0;
-//
-//
-//        }
-//        else
-//        {
-//
-//        }
-//
-//        float xxx = -(xx + wx);
-//        float yyy = yy + wy;
-//        float zzz = wz + zz;
-//        float www = ww + w;
-//
-//        quaternion = GLKQuaternionMake(xxx,  yyy, zzz, www);
-
-//        if (xxx > 1) {
-//            xxx = 2 - xxx;
-//        }
-//        else if(xxx < -1){
-//            xxx = -2 - xxx;
-//        }
-//
-//        if (yyy > 1) {
-//            yyy = 2 - yyy;
-//        }
-//        else if(yyy < -1){
-//            yyy = -2 - yyy;
-//        }
-//
-//        if (zzz > 1) {
-//            zzz = 2 - zzz;
-//        }
-//        else if(zzz < -1){
-//            zzz = -2 - zzz;
-//        }
-//
-//        if (www > 1) {
-//            www = 2 - www;
-//        }
-//        else if(www < -1){
-//            www = -2 - www;
-//        }
-        
-//        quaternion = GLKQuaternionMake(xxx,  yyy, zzz, www);
-
         NSLog(@"%f + %f + %f + %f",xx,yy,zz,ww);
 //        NSLog(@"%f + %f + %f + %f",xxx,yyy,zzz,www);
         NSLog(@"%f,%f,%f,%f",wx,wy,wz,w);
@@ -559,18 +449,6 @@ static float ww = 0;
     }
     
     return radius;
-}
-
-#pragma -Test button
-
-- (void)createTestButton{
-    [self.startButton addTarget:self action:@selector(startPanoramViewMotion) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    [self.endButton addTarget:self action:@selector(stopPanoramViewMotion) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:self.startButton];
-    [self.view addSubview:self.endButton];
 }
 
 - (void)dealloc{
