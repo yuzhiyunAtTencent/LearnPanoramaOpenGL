@@ -386,8 +386,6 @@ static float ww = 0;
     modelViewMatrix = GLKMatrix4Multiply(modelViewMatrix, GLKMatrix4MakeWithQuaternion(quaternion));
     // 为了保证在水平放置手机的时候, 是从上往下看, 因此首先坐标系沿着x轴旋转90度
     modelViewMatrix = GLKMatrix4RotateX(modelViewMatrix, M_PI_2);
-    //左右滑动绕Y轴旋转
-    modelViewMatrix = GLKMatrix4RotateY(modelViewMatrix, 0.005 * _panX);
     // 设置观察矩阵
     _effect.transform.modelviewMatrix = modelViewMatrix;
 }
