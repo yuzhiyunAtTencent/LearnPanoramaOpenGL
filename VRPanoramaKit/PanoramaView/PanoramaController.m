@@ -351,8 +351,6 @@ static float ww = 0;
 #pragma mark GLKViewControllerDelegate
 
 - (void)glkViewControllerUpdate:(GLKViewController *)controller {
-    
-    
     CGSize size    = self.view.bounds.size;
     float aspect   = fabs(size.width / size.height);
     
@@ -367,61 +365,31 @@ static float ww = 0;
                                                                    aspect,
                                                                    0.1f,
                                                                    1);
-    
-    GLKQuaternion quaternion;
+    projectionMatrix = GLKMatrix4Scale(projectionMatrix, -1.0f, 1.0f, 1.0f);
 
-    
-    if(self.isMotion){
-        
-
-        
-        projectionMatrix                   = GLKMatrix4Scale(projectionMatrix, -1.0f, 1.0f, 1.0f);
-        
-        CMDeviceMotion *deviceMotion       = self.motionManager.deviceMotion;
-        
-        double w                           = deviceMotion.attitude.quaternion.w;
-        double wx                          = deviceMotion.attitude.quaternion.x;
-        double wy                          = deviceMotion.attitude.quaternion.y;
-        double wz                          = deviceMotion.attitude.quaternion.z;
-        
-        quaternion = GLKQuaternionMake(-wx,  wy, wz, w);
-        NSLog(@"%f + %f + %f + %f",xx,yy,zz,ww);
-//        NSLog(@"%f + %f + %f + %f",xxx,yyy,zzz,www);
-        NSLog(@"%f,%f,%f,%f",wx,wy,wz,w);
-
-        
-    }
-    else{
-    
-        projectionMatrix = GLKMatrix4Scale(projectionMatrix, -1.0f, 1.0f, 1.0f);
-
-        quaternion       = GLKQuaternionMake(0, 0.7, 0.7, 0);
-        _panY            = 0;
-        _panX            = 0;
-        xx = 0;
-        yy = 0;
-        zz = 0;
-        ww = 0;
-    }
-    
-
-
-    GLKMatrix4 rotation                = GLKMatrix4MakeWithQuaternion(quaternion);
-    
-
-    //上下滑动，绕X轴旋转
-    projectionMatrix                   = GLKMatrix4RotateX(projectionMatrix, -0.005 * _panY);
-    projectionMatrix                   = GLKMatrix4Multiply(projectionMatrix, rotation);
-    // 为了保证在水平放置手机的时候, 是从下往上看, 因此首先坐标系沿着x轴旋转90度
-    projectionMatrix                   = GLKMatrix4RotateX(projectionMatrix, M_PI_2);
-    
-    
     _effect.transform.projectionMatrix = projectionMatrix;
-    GLKMatrix4 modelViewMatrix         = GLKMatrix4Identity;
+    
+    // 陀螺仪旋转角度（四元数形式）
+    CMDeviceMotion *deviceMotion = self.motionManager.deviceMotion;
+    double w = deviceMotion.attitude.quaternion.w;
+    double x = deviceMotion.attitude.quaternion.x;
+    double y = deviceMotion.attitude.quaternion.y;
+    double z = deviceMotion.attitude.quaternion.z;
+    GLKQuaternion quaternion = GLKQuaternionMake(-x,  y, z, w);
+    
+    GLKMatrix4 modelViewMatrix = GLKMatrix4Identity;
+    // 手指上下滑动，绕X轴旋转
+    modelViewMatrix = GLKMatrix4RotateX(modelViewMatrix, -0.005 * _panY);
+    // 手指左右滑动, 绕Y轴旋转
+    modelViewMatrix = GLKMatrix4RotateY(modelViewMatrix, 0.005 * _panX);
+    // 陀螺仪（手机自身旋转）
+    modelViewMatrix = GLKMatrix4Multiply(modelViewMatrix, GLKMatrix4MakeWithQuaternion(quaternion));
+    // 为了保证在水平放置手机的时候, 是从上往下看, 因此首先坐标系沿着x轴旋转90度
+    modelViewMatrix = GLKMatrix4RotateX(modelViewMatrix, M_PI_2);
     //左右滑动绕Y轴旋转
-    modelViewMatrix                    = GLKMatrix4RotateY(modelViewMatrix, 0.005 * _panX);
-    _effect.transform.modelviewMatrix  = modelViewMatrix;
- 
+    modelViewMatrix = GLKMatrix4RotateY(modelViewMatrix, 0.005 * _panX);
+    // 设置观察矩阵
+    _effect.transform.modelviewMatrix = modelViewMatrix;
 }
 
 - (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause{
