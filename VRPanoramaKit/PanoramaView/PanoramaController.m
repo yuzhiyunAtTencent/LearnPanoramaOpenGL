@@ -281,10 +281,7 @@
      第二个参数: 表示时屏幕的纵横比
      第三个, 第四参数: 是为了实现透视效果, 近大远处小, 要确保模型位于远近平面之间
      */
-    GLKMatrix4 projectionMatrix        = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(radius),
-                                                                   aspect,
-                                                                   0.1f,
-                                                                   1);
+    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(radius), aspect, 0.1f, 10);
     projectionMatrix = GLKMatrix4Scale(projectionMatrix, -1.0f, 1.0f, 1.0f);
 
     _effect.transform.projectionMatrix = projectionMatrix;
@@ -307,8 +304,8 @@
     // 为了保证在水平放置手机的时候, 是从上往下看, 因此首先坐标系沿着x轴旋转90度
     modelViewMatrix = GLKMatrix4RotateX(modelViewMatrix, M_PI_2);
     
-//    // 如果加上这个z轴的平移，就会把物体沿着z轴负方向移动1.5，也就相当于摄像机或者眼睛的位置后移了，这样就看到一个球体外壁了，就像看地球仪，而不是从球心看内壁
-//    modelViewMatrix = GLKMatrix4Multiply(modelViewMatrix, GLKMatrix4MakeTranslation(0, 0, -1.5));
+//    // 如果加上这个z轴的平移，就会把物体沿着z轴负方向移动2，也就相当于摄像机或者眼睛的位置后移了，这样就看到一个球体外壁了，就像看地球仪，而不是从球心看内壁
+//    modelViewMatrix = GLKMatrix4Multiply(modelViewMatrix, GLKMatrix4MakeTranslation(0, 0, -2));
     // 设置模型视图矩阵
     _effect.transform.modelviewMatrix = modelViewMatrix;
 }
