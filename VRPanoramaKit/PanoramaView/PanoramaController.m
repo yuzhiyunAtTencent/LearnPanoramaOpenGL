@@ -306,6 +306,9 @@
     modelViewMatrix = GLKMatrix4Multiply(modelViewMatrix, GLKMatrix4MakeWithQuaternion(quaternion));
     // 为了保证在水平放置手机的时候, 是从上往下看, 因此首先坐标系沿着x轴旋转90度
     modelViewMatrix = GLKMatrix4RotateX(modelViewMatrix, M_PI_2);
+    
+//    // 如果加上这个z轴的平移，就会把摄像机往后移，就看到一个球体外壁了，就像看地球仪，而不是从球心看内壁
+//    modelViewMatrix = GLKMatrix4Multiply(modelViewMatrix, GLKMatrix4MakeTranslation(0, 0, -1.5));
     // 设置观察矩阵
     _effect.transform.modelviewMatrix = modelViewMatrix;
 }
