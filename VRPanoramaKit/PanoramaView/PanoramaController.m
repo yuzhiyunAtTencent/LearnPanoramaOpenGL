@@ -309,7 +309,7 @@
     
 //    // 如果加上这个z轴的平移，就会把摄像机往后移，就看到一个球体外壁了，就像看地球仪，而不是从球心看内壁
 //    modelViewMatrix = GLKMatrix4Multiply(modelViewMatrix, GLKMatrix4MakeTranslation(0, 0, -1.5));
-    // 设置观察矩阵
+    // 设置模型视图矩阵
     _effect.transform.modelviewMatrix = modelViewMatrix;
 }
 
