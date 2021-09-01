@@ -308,6 +308,7 @@
 //    modelViewMatrix = GLKMatrix4Multiply(modelViewMatrix, GLKMatrix4MakeTranslation(0, 0, -2));
     // 设置模型视图矩阵
     _effect.transform.modelviewMatrix = modelViewMatrix;
+    //https://daniate.com/2020/01/30/183.html（一篇关于GLKit矩阵的文章）
 }
 
 - (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause{
