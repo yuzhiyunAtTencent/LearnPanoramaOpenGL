@@ -10,14 +10,9 @@
 #import "PanoramaUtil.h"
 
 #define ES_PI  (3.14159265f)
-
 #define MAX_VIEW_DEGREE 110.0f  //最大视角
 #define MIN_VIEW_DEGREE 50.0f   //最小视角
-
 #define FRAME_PER_SENCOND 60.0  //帧数
-
-//#define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
-//#define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 
 @interface PanoramaController ()<GLKViewControllerDelegate,GLKViewDelegate>
 
@@ -79,48 +74,17 @@
     return _motionManager;
 }
 
-
-- (UIButton *)startButton{
-    if (_startButton == nil) {
-        _startButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _startButton.frame = CGRectMake(100, 100, 100, 50);
-        [_startButton setTitle:@"开启全景图" forState:UIControlStateNormal];
-        [_startButton setBackgroundColor:[UIColor whiteColor]];
-        [_startButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    }
-    return _startButton;
-}
-
-
-- (UIButton *)endButton{
-    if (_endButton == nil) {
-        _endButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _endButton.frame = CGRectMake(100, 160, 100, 50);
-        [_endButton setTitle:@"关闭全景图" forState:UIControlStateNormal];
-        [_endButton setBackgroundColor:[UIColor whiteColor]];
-        [_endButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    }
-    return _endButton;
-}
-
 - (instancetype)init {
-    
     self = [super init];
-    
     if (self) {
-        
         [self createPanoramView];
     }
     return self;
 }
 
 - (instancetype)initWithImageName:(NSString *)imageName type:(NSString *)type{
-    
-
     self = [super init];
-    
     if (self) {
-
         self.imageName     = imageName;
         self.imageNameType = type;
         
@@ -128,21 +92,12 @@
             
             type = @"jpg";
         }
-        
-
-        
         [self createPanoramView];
-        
-        
-        //实际开发中移除测试按钮
-//        [self createTestButton];
-        
      }
     return self;
 }
 
 - (void)startPanoramViewMotion{
-    
     self.isMotion = YES;
 
     self.delegate                         = self;
@@ -152,22 +107,15 @@
 
     
     [self startDeviceMotion];
-
 }
 
 - (void)stopPanoramViewMotion {
-    
     self.isMotion = NO;
-
-    //    self.delegate = nil;
-
-    
 }
 
 #pragma -Private
 
-- (void)createPanoramView{
-    
+- (void)createPanoramView {
     if (self.imageName == nil) {
         NSAssert(self.imageName.length != 0, @"image name is nil,please check image name of PanoramView");
         return;
@@ -185,33 +133,22 @@
     [self addGesture];
 
     [self startPanoramViewMotion];
-
-//    self.isMotion = NO;
-
-    
 }
 
 #pragma mark set device Motion
 - (void)startDeviceMotion {
-
     [self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryCorrectedZVertical];
-    
-    
     _modelViewMatrix = GLKMatrix4Identity;
-    
 }
 
 - (void)stopDeviceMotion {
-    
     [self.motionManager stopDeviceMotionUpdates];
     [self.motionManager stopAccelerometerUpdates];
-    
 }
 
 #pragma mark setup OpenGL
 
 - (void)setupOpenGL {
-    
     glEnable(GL_DEPTH_TEST);
     
     // 顶点
@@ -267,7 +204,6 @@
 #pragma mark Gesture
 
 - (void)addGesture {
-    
     /// 平移手势
     UIPanGestureRecognizer *pan =[[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                          action:@selector(panGestture:)];
@@ -298,19 +234,14 @@
     
     //转换之后归零
     [sender setTranslation:CGPointZero inView:self.view];
-    
-    
 }
 
 - (void)pinchGesture:(UIPinchGestureRecognizer *)sender {
-    
     _scale       *= sender.scale;
     sender.scale = 1.0;
-
 }
 
 - (void)tapGesture:(UITapGestureRecognizer *)sender {
-    
     if (!_isTapScale) {
         
         _isTapScale = YES;
@@ -322,16 +253,11 @@
         _scale = 1.0;
         _isTapScale = NO;
     }
-    
-
-        
 }
-
 
 #pragma mark -GLKViewDelegate
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
-    
     /**清除颜色缓冲区内容时候: 使用白色填充*/
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     /**清除颜色缓冲区与深度缓冲区内容*/
@@ -341,12 +267,6 @@
     glDrawElements(GL_TRIANGLES, _numIndices, GL_UNSIGNED_INT,0);
 
 }
-
-static float xx = 0;
-static float yy = 0;
-static float zz = 0;
-static float ww = 0;
-
 
 #pragma mark GLKViewControllerDelegate
 
@@ -394,11 +314,7 @@ static float ww = 0;
     NSLog(@"pause:%d", pause);
 }
 
-- (void)drawPanoramView{
-}
-
 - (CGFloat)rotateFromFocalLengh{
-    
     CGFloat radius = 100 / _scale;
     
     // radius不小于50, 不大于110;
@@ -416,10 +332,5 @@ static float ww = 0;
     
     return radius;
 }
-
-- (void)dealloc{
-    
-}
-
 
 @end
