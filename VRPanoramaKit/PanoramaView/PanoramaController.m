@@ -275,7 +275,8 @@
     float aspect   = fabs(size.width / size.height);
     /*
      *在全景效果中，捏合手势用于放大缩小。
-     *我们可以通过UIPinchGestureRecognizer可以拿到捏合手势的scale, 根据scale可以调整透视投影的视角大小，在透视投影中，通过调整视角大小（fov: Field of *View），可以达到放大缩小的效果，视角越大，物体越小。（视角大小就是GLKMatrix4MakePerspective函数的第一个参数）
+     *我们可以通过UIPinchGestureRecognizer可以拿到捏合手势的scale, 根据scale可以调整透视投影的视角大小，
+     *在透视投影中，通过调整视角大小（fov: Field of *View），可以达到放大缩小的效果，视角越大，物体越小。（视角大小就是GLKMatrix4MakePerspective函数的第一个参数）
      */
     CGFloat radius = [self rotateFromFocalLengh];
     
